@@ -1,159 +1,164 @@
 <?php
-session_start();
-require_once 'app/models/Remainder.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: /app/controllers/login.php');
-    exit();
-}
+class Remainders extends Controller {
 
-$remainderModel = new Remainder();
+  private $remainderModel;
+  private $userModel;
+  private $userId;
 
-$action = isset($_GET['action']) ? $_GET['action'] : 'index';
+  public function __construct() {
+    session_start();
 
-switch ($action) {
-    case 'index': index($remainderModel); break;
-    case 'create': create(); break;
-    case 'store': store($remainderModel); break;
-    case 'edit': edit($remainderModel); break;
-    case 'update': update($remainderModel); break;
-    case 'delete': delete($remainderModel); break;
-    case 'confirm_delete': confirm_delete($remainderModel); break;
-    case 'complete': complete($remainderModel); break;
-    case 'confirm_complete': confirm_complete($remainderModel); break;
-    default: index($remainderModel); break;
-}
-
-function index($model) {
-    $remainders = $model->get_all_remainders_by_id($_SESSION['user_id']);
-    include 'app/views/remainders/index.php';
-}
-
-function create() {
-    include 'app/views/remainders/create.php';
-}
-
-function store($model) {
-    $subject = trim($_POST['subject']);
-    $description = trim($_POST['description']);
-
-    if ($subject && $description) {
-        $model->create_remainder($_SESSION['user_id'], htmlspecialchars($subject), htmlspecialchars($description));
+    if (!isset($_SESSION['auth'])) {
+      header('Location: /login');
+      exit();
     }
-    header('Location: ?controller=remainders&action=index');
-}
 
-function edit($model) {
-    $id = (int)$_GET['id'];
-    $records = $model->get_all_remainders_by_id($_SESSION['user_id']);
-    $found = false;
-    foreach ($records as $rem) {
-        if ($rem['id'] == $id) {
-            $remainder = $rem;
-            $found = true;
-            break;
-        }
+    $this->remainderModel = $this->model('Remainder');
+    $this->userModel = $this->model('User');
+
+    // 🔑 Lookup user ID from username:
+    $username = $_SESSION['username'] ?? '';
+    $user = $this->userModel->get_user_by_username($username);
+
+    if (!$user) {
+      echo 'Access Denied';
+      exit();
     }
-    if (!$found) {
+
+    $this->userId = $user['id'];
+  }
+
+  public function index() {
+    $remainders = $this->remainderModel->get_all_remainders_by_id($this->userId);
+    $this->view('remainders/index', ['remainders' => $remainders]);
+  }
+
+  public function create() {
+    $this->view('remainders/create');
+  }
+
+  public function store() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $subject = trim($_POST['subject']);
+      $description = trim($_POST['description']);
+
+      if ($subject && $description) {
+        $this->remainderModel->create_remainder(
+          $this->userId,
+          htmlspecialchars($subject),
+          htmlspecialchars($description)
+        );
+      }
+
+      header('Location: /remainders');
+      exit();
+    }
+  }
+
+  public function edit($id) {
+    $remainders = $this->remainderModel->get_all_remainders_by_id($this->userId);
+    $remainder = $this->findRemainder($remainders, $id);
+
+    if (!$remainder) {
+      echo 'Access Denied';
+      exit();
+    }
+
+    $this->view('remainders/edit', ['remainder' => $remainder]);
+  }
+
+  public function update($id) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $remainders = $this->remainderModel->get_all_remainders_by_id($this->userId);
+      $remainder = $this->findRemainder($remainders, $id);
+
+      if (!$remainder) {
         echo 'Access Denied';
         exit();
-    }
-    include 'app/views/remainders/edit.php';
-}
+      }
 
-function update($model) {
-    $id = (int)$_POST['id'];
-    $records = $model->get_all_remainders_by_id($_SESSION['user_id']);
-    $found = false;
-    foreach ($records as $rem) {
-        if ($rem['id'] == $id) {
-            $found = true;
-            break;
-        }
+      $subject = trim($_POST['subject']);
+      $description = trim($_POST['description']);
+
+      if ($subject && $description) {
+        $this->remainderModel->update_remainder(
+          $id,
+          htmlspecialchars($subject),
+          htmlspecialchars($description)
+        );
+      }
+
+      header('Location: /remainders');
+      exit();
     }
-    if (!$found) {
+  }
+
+  public function delete($id) {
+    $remainders = $this->remainderModel->get_all_remainders_by_id($this->userId);
+    $remainder = $this->findRemainder($remainders, $id);
+
+    if (!$remainder) {
+      echo 'Access Denied';
+      exit();
+    }
+
+    $this->view('remainders/delete', ['remainder' => $remainder]);
+  }
+
+  public function confirm_delete($id) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $remainders = $this->remainderModel->get_all_remainders_by_id($this->userId);
+      $remainder = $this->findRemainder($remainders, $id);
+
+      if (!$remainder) {
         echo 'Access Denied';
         exit();
+      }
+
+      $this->remainderModel->delete_remainder($id);
+
+      header('Location: /remainders');
+      exit();
+    }
+  }
+
+  public function complete($id) {
+    $remainders = $this->remainderModel->get_all_remainders_by_id($this->userId);
+    $remainder = $this->findRemainder($remainders, $id);
+
+    if (!$remainder) {
+      echo 'Access Denied';
+      exit();
     }
 
-    $subject = trim($_POST['subject']);
-    $description = trim($_POST['description']);
-    if ($subject && $description) {
-        $model->update_remainder($id, htmlspecialchars($subject), htmlspecialchars($description));
-    }
-    header('Location: ?controller=remainders&action=index');
-}
+    $this->view('remainders/complete', ['remainder' => $remainder]);
+  }
 
-function delete($model) {
-    $id = (int)$_GET['id'];
-    $records = $model->get_all_remainders_by_id($_SESSION['user_id']);
-    $found = false;
-    foreach ($records as $rem) {
-        if ($rem['id'] == $id) {
-            $remainder = $rem;
-            $found = true;
-            break;
-        }
-    }
-    if (!$found) {
+  public function confirm_complete($id) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $remainders = $this->remainderModel->get_all_remainders_by_id($this->userId);
+      $remainder = $this->findRemainder($remainders, $id);
+
+      if (!$remainder) {
         echo 'Access Denied';
         exit();
-    }
-    include 'app/views/remainders/delete.php';
-}
+      }
 
-function confirm_delete($model) {
-    $id = (int)$_POST['id'];
-    $records = $model->get_all_remainders_by_id($_SESSION['user_id']);
-    $found = false;
-    foreach ($records as $rem) {
-        if ($rem['id'] == $id) {
-            $found = true;
-            break;
-        }
-    }
-    if (!$found) {
-        echo 'Access Denied';
-        exit();
-    }
-    $model->delete_remainder($id);
-    header('Location: ?controller=remainders&action=index');
-}
+      $this->remainderModel->complete_remainder($id);
 
-function complete($model) {
-    $id = (int)$_GET['id'];
-    $records = $model->get_all_remainders_by_id($_SESSION['user_id']);
-    $found = false;
-    foreach ($records as $rem) {
-        if ($rem['id'] == $id) {
-            $remainder = $rem;
-            $found = true;
-            break;
-        }
+      header('Location: /remainders');
+      exit();
     }
-    if (!$found) {
-        echo 'Access Denied';
-        exit();
-    }
-    include 'app/views/remainders/complete.php';
-}
+  }
 
-function confirm_complete($model) {
-    $id = (int)$_POST['id'];
-    $records = $model->get_all_remainders_by_id($_SESSION['user_id']);
-    $found = false;
-    foreach ($records as $rem) {
-        if ($rem['id'] == $id) {
-            $found = true;
-            break;
-        }
+  private function findRemainder($remainders, $id) {
+    foreach ($remainders as $rem) {
+      if ($rem['id'] == $id) {
+        return $rem;
+      }
     }
-    if (!$found) {
-        echo 'Access Denied';
-        exit();
-    }
-    $model->complete_remainder($id);
-    header('Location: ?controller=remainders&action=index');
-}
+    return null;
+  }
 
-?>
+}

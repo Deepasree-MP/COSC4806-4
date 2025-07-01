@@ -12,7 +12,7 @@
     <?php if (isset($_SESSION['auth'])): ?>
     <div class="row">
         <div class="col-lg-12">
-            <a href="?controller=remainders&action=index">My Remainders</a>
+            <a class="nav-link" href="/remainders/index">My Remainders</a>
             <h3>All Registered Users</h3>
             <table class="table table-bordered">
                 <thead>
