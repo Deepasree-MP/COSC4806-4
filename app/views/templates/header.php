@@ -186,9 +186,15 @@
                 </li>
               </ul>
               <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                  <a class="nav-link fw-bold" href="/logout">Logout</a>
-                </li>
+                <?php if (isset($_SESSION['auth'])): ?>
+                  <li class="nav-item">
+                    <a class="nav-link fw-bold" href="/logout">Logout</a>
+                  </li>
+                <?php else: ?>
+                  <li class="nav-item">
+                    <a class="nav-link fw-bold" href="/login">Login</a>
+                  </li>
+                <?php endif; ?>
               </ul>
             </div>
           </div>

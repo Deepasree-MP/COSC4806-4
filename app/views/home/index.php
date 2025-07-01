@@ -9,6 +9,7 @@
         </div>
     </div>
 
+    <?php if (isset($_SESSION['auth'])): ?>
     <div class="row">
         <div class="col-lg-12">
             <h3>All Registered Users</h3>
@@ -36,5 +37,12 @@
             <p> <a href="/logout">Click here to logout</a></p>
         </div>
     </div>
+    <?php else: ?>
+    <div class="row">
+        <div class="col-lg-12">
+            <p> <a href="/login">Click here to login</a></p>
+        </div>
+    </div>
+    <?php endif; ?>
 
     <?php require_once 'app/views/templates/footer.php' ?>
