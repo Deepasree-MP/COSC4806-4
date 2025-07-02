@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="page-header mb-4">
-        <h2>Create New Remainder</h2>
+        <h2>Create Remainder</h2>
     </div>
 
     <form action="/remainders/store" method="post">

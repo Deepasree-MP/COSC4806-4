@@ -12,7 +12,7 @@
 
     <div class="row mb-3">
         <div class="col-lg-12">
-            <a href="/remainders/create" class="btn btn-danger mb-3">Create New Remainder</a>
+            <a href="/remainders/create" class="btn btn-danger mb-3">Create Remainder</a>
         </div>
     </div>
 

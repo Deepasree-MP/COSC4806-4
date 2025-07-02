@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="page-header mb-4">
-        <h2>Edit Remainder</h2>
+        <h2>Modify Remainder</h2>
     </div>
 
     <form action="/remainders/update/<?= $remainder['id'] ?>" method="post">
