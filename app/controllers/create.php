@@ -27,7 +27,7 @@ class Create extends Controller
                         $message = "<span style='color:red;'>Account cannot be created. Username already exists.</span>";
                     } else {
                         $user_id = $user->create_user($username, $password);
-                        $message = "Account created successfully. Your user ID is $user_id.<br><a href='/logout'>Click here to login</a>";
+                        $message = "Account created successfully. Your user name is $username.<br><a href='/login'>Click here to login</a>";
                     }
                 } catch (Exception $e) {
                     $message = "Error: " . $e->getMessage();

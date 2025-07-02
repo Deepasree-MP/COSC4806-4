@@ -6,7 +6,7 @@
             <h2 class="text-center fw-normal mb-4">Create an Account</h2>
 
             <?php if (!empty($message)) : ?>
-                <div class="alert alert-danger"><?= htmlspecialchars($message) ?></div>
+                <div class="alert alert-success"><?php echo $message; ?></div>
             <?php endif; ?>
 
             <form method="post" action="/create">

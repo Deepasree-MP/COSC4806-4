@@ -1,16 +1,24 @@
 <?php include 'app/views/templates/header.php'; ?>
 
-<h2>Create New Remainder</h2>
+<div class="container">
+    <div class="page-header mb-4">
+        <h2>Create New Remainder</h2>
+    </div>
 
-<form action="/remainders/store" method="post">
-    <label>Subject:</label><br>
-    <input type="text" name="subject" required><br><br>
+    <form action="/remainders/store" method="post">
+        <div class="mb-3">
+            <label class="form-label">Subject:</label>
+            <input type="text" name="subject" class="form-control" required>
+        </div>
 
-    <label>Description:</label><br>
-    <textarea name="description" rows="5" cols="40" required></textarea><br><br>
+        <div class="mb-3">
+            <label class="form-label">Description:</label>
+            <textarea name="description" rows="5" class="form-control" required></textarea>
+        </div>
 
-    <button type="submit">Save</button>
-    <a href="/remainders">Cancel</a>
-</form>
+        <button type="submit" class="btn btn-danger">Save</button>
+        <a href="/remainders" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
 
 <?php include 'app/views/templates/footer.php'; ?>

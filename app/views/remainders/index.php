@@ -1,35 +1,67 @@
 <?php include 'app/views/templates/header.php'; ?>
 
-<h2>My Remainders</h2>
-<a href="/remainders/create">Create New Remainder</a>
+<div class="container">
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Hey <?= htmlspecialchars($_SESSION['username'] ?? 'Guest') ?></h1>
+                <p class="lead"><?= date("F jS, Y"); ?></p>
+            </div>
+        </div>
+    </div>
 
-<table border="1" cellpadding="5">
-    <tr>
-        <th>Serial Number</th>
-        <th>Status</th>
-        <th>Subject</th>
-        <th>Description</th>
-        <th>Actions</th>
-    </tr>
-    <?php $count = 1; foreach ($remainders as $rem): ?>
-    <tr>
-        <td><?= $count++; ?></td>
-        <td>
-            <?php
-            if ($rem['status'] == 1) echo 'Active';
-            elseif ($rem['status'] == 0) echo 'Completed';
-            elseif ($rem['status'] == 2) echo 'Cancelled';
-            ?>
-        </td>
-        <td><?= htmlspecialchars($rem['subject']); ?></td>
-        <td><?= htmlspecialchars($rem['description']); ?></td>
-        <td>
-            <a href="/remainders/edit/<?= $rem['id'] ?>">Modify</a> |
-            <a href="/remainders/delete/<?= $rem['id'] ?>">Delete</a> |
-            <a href="/remainders/complete/<?= $rem['id'] ?>">Complete</a>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+    <div class="row mb-3">
+        <div class="col-lg-12">
+            <a href="/remainders/create" class="btn btn-danger">Create New Remainder</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>My Remainders</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Subject</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($remainders as $rem): ?>
+                    <tr>
+                        <td>
+                            <?php
+                            if ($rem['status'] == 1) echo 'Active';
+                            elseif ($rem['status'] == 0) echo 'Completed';
+                            elseif ($rem['status'] == 2) echo 'Cancelled';
+                            ?>
+                        </td>
+                        <td><?= htmlspecialchars($rem['subject']); ?></td>
+                        <td><?= htmlspecialchars($rem['description']); ?></td>
+                        <td>
+                            <?php if ($rem['status'] != 0): // Not Completed ?>
+                                <a href="/remainders/edit/<?= $rem['id'] ?>" class="btn btn-sm btn-outline-primary">Modify</a>
+                            <?php endif; ?>
+
+                            <?php if ($rem['status'] == 1): // Only Active ?>
+                                <a href="/remainders/delete/<?= $rem['id'] ?>" class="btn btn-sm btn-outline-danger">Delete</a>
+                                <a href="/remainders/complete/<?= $rem['id'] ?>" class="btn btn-sm btn-outline-success">Complete</a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <p><a href="/logout">Click here to logout</a></p>
+        </div>
+    </div>
+</div>
 
 <?php include 'app/views/templates/footer.php'; ?>
