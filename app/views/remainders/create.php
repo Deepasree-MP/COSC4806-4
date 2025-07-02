@@ -16,8 +16,10 @@
             <textarea name="description" rows="5" class="form-control" required></textarea>
         </div>
 
-        <button type="submit" class="btn btn-danger">Save</button>
-        <a href="/remainders" class="btn btn-outline-secondary">Cancel</a>
+        <div class="d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-danger">Save</button>
+            <a href="/remainders" class="btn btn-outline-secondary">Cancel</a>
+        </div>
     </form>
 </div>
 

@@ -6,14 +6,16 @@
     </div>
 
     <div class="alert alert-info">
-        <p>Are you sure you want to mark this remainder as completed?</p>
+        <p>Do you want to mark this remainder as completed?</p>
         <p><strong>Subject:</strong> <?= htmlspecialchars($remainder['subject']); ?></p>
         <p><strong>Description:</strong> <?= htmlspecialchars($remainder['description']); ?></p>
     </div>
 
     <form action="/remainders/confirm_complete/<?= $remainder['id'] ?>" method="post">
-        <button type="submit" class="btn btn-success">Confirm Complete</button>
-        <a href="/remainders" class="btn btn-outline-secondary">Cancel</a>
+        <div class="d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-success">Confirm Complete</button>
+            <a href="/remainders" class="btn btn-outline-secondary">Cancel</a>
+        </div>
     </form>
 </div>
 

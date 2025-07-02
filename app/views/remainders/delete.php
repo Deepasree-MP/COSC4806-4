@@ -6,14 +6,16 @@
     </div>
 
     <div class="alert alert-warning">
-        <p>Are you sure you want to delete this remainder?</p>
+        <p>Do you want to delete this remainder?</p>
         <p><strong>Subject:</strong> <?= htmlspecialchars($remainder['subject']); ?></p>
         <p><strong>Description:</strong> <?= htmlspecialchars($remainder['description']); ?></p>
     </div>
 
     <form action="/remainders/confirm_delete/<?= $remainder['id'] ?>" method="post">
-        <button type="submit" class="btn btn-danger">Confirm Delete</button>
-        <a href="/remainders" class="btn btn-outline-secondary">Cancel</a>
+        <div class="d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            <a href="/remainders" class="btn btn-outline-secondary">Cancel</a>
+        </div>
     </form>
 </div>
 

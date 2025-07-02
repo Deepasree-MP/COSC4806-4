@@ -12,48 +12,52 @@
 
     <div class="row mb-3">
         <div class="col-lg-12">
-            <a href="/remainders/create" class="btn btn-danger">Create New Remainder</a>
+            <a href="/remainders/create" class="btn btn-danger mb-3">Create New Remainder</a>
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-12">
             <h3>My Remainders</h3>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Status</th>
-                        <th>Subject</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($remainders as $rem): ?>
-                    <tr>
-                        <td>
-                            <?php
-                            if ($rem['status'] == 1) echo 'Active';
-                            elseif ($rem['status'] == 0) echo 'Completed';
-                            elseif ($rem['status'] == 2) echo 'Cancelled';
-                            ?>
-                        </td>
-                        <td><?= htmlspecialchars($rem['subject']); ?></td>
-                        <td><?= htmlspecialchars($rem['description']); ?></td>
-                        <td>
-                            <?php if ($rem['status'] != 0): // Not Completed ?>
-                                <a href="/remainders/edit/<?= $rem['id'] ?>" class="btn btn-sm btn-outline-primary">Modify</a>
-                            <?php endif; ?>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Subject</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($remainders as $rem): ?>
+                        <tr>
+                            <td>
+                                <?php
+                                if ($rem['status'] == 1) echo 'Active';
+                                elseif ($rem['status'] == 0) echo 'Completed';
+                                elseif ($rem['status'] == 2) echo 'Cancelled';
+                                ?>
+                            </td>
+                            <td><?= htmlspecialchars($rem['subject']); ?></td>
+                            <td><?= htmlspecialchars($rem['description']); ?></td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <?php if ($rem['status'] != 0): ?>
+                                        <a href="/remainders/edit/<?= $rem['id'] ?>" class="btn btn-sm btn-outline-primary">Modify</a>
+                                    <?php endif; ?>
 
-                            <?php if ($rem['status'] == 1): // Only Active ?>
-                                <a href="/remainders/delete/<?= $rem['id'] ?>" class="btn btn-sm btn-outline-danger">Delete</a>
-                                <a href="/remainders/complete/<?= $rem['id'] ?>" class="btn btn-sm btn-outline-success">Complete</a>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                                    <?php if ($rem['status'] == 1): ?>
+                                        <a href="/remainders/delete/<?= $rem['id'] ?>" class="btn btn-sm btn-outline-danger">Delete</a>
+                                        <a href="/remainders/complete/<?= $rem['id'] ?>" class="btn btn-sm btn-outline-success">Complete</a>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
