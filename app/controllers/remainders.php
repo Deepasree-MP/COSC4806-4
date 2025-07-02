@@ -11,7 +11,7 @@ class Remainders extends Controller {
 
     if (!isset($_SESSION['auth'])) {
       header('Location: /login');
-      exit();
+      die;
     }
 
     $this->remainderModel = $this->model('Remainder');
@@ -21,8 +21,8 @@ class Remainders extends Controller {
     $user = $this->userModel->get_user_by_username($username);
 
     if (!$user) {
-      echo 'Access Denied';
-      exit();
+      echo 'User not authorized';
+      die;
     }
 
     $this->userId = $user['id'];
@@ -51,7 +51,7 @@ class Remainders extends Controller {
       }
 
       header('Location: /remainders');
-      exit();
+      die;
     }
   }
 
@@ -60,8 +60,8 @@ class Remainders extends Controller {
     $remainder = $this->findRemainder($remainders, $id);
 
     if (!$remainder) {
-      echo 'Access Denied';
-      exit();
+      echo 'Remainder not found';
+      die;
     }
 
     $this->view('remainders/edit', ['remainder' => $remainder]);
@@ -73,8 +73,8 @@ class Remainders extends Controller {
       $remainder = $this->findRemainder($remainders, $id);
 
       if (!$remainder) {
-        echo 'Access Denied';
-        exit();
+        echo 'Remainder not found';
+        die;
       }
 
       $subject = trim($_POST['subject']);
@@ -89,7 +89,7 @@ class Remainders extends Controller {
       }
 
       header('Location: /remainders');
-      exit();
+      die;
     }
   }
 
@@ -98,8 +98,8 @@ class Remainders extends Controller {
     $remainder = $this->findRemainder($remainders, $id);
 
     if (!$remainder) {
-      echo 'Access Denied';
-      exit();
+      echo 'Remainder not found';
+      die;
     }
 
     $this->view('remainders/delete', ['remainder' => $remainder]);
@@ -111,14 +111,14 @@ class Remainders extends Controller {
       $remainder = $this->findRemainder($remainders, $id);
 
       if (!$remainder) {
-        echo 'Access Denied';
-        exit();
+        echo 'Remainder not found';
+        die;
       }
 
       $this->remainderModel->delete_remainder($id);
 
       header('Location: /remainders');
-      exit();
+      die;
     }
   }
 
@@ -127,8 +127,8 @@ class Remainders extends Controller {
     $remainder = $this->findRemainder($remainders, $id);
 
     if (!$remainder) {
-      echo 'Access Denied';
-      exit();
+      echo 'Remainder not found';
+      die;
     }
 
     $this->view('remainders/complete', ['remainder' => $remainder]);
@@ -140,14 +140,14 @@ class Remainders extends Controller {
       $remainder = $this->findRemainder($remainders, $id);
 
       if (!$remainder) {
-        echo 'Access Denied';
-        exit();
+        echo 'Remainder not found';
+        die;
       }
 
       $this->remainderModel->complete_remainder($id);
 
       header('Location: /remainders');
-      exit();
+      die;
     }
   }
 
