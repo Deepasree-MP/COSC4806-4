@@ -17,7 +17,6 @@ class Remainders extends Controller {
     $this->remainderModel = $this->model('Remainder');
     $this->userModel = $this->model('User');
 
-    // 🔑 Lookup user ID from username:
     $username = $_SESSION['username'] ?? '';
     $user = $this->userModel->get_user_by_username($username);
 
