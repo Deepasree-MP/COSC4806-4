@@ -96,7 +96,6 @@ class Remainders extends Controller
                 );
             }
 
-
             $newRow = $this->remainderModel->get_remainder_by_id($id);
 
             $this->view('remainders/edit', [
@@ -125,17 +124,22 @@ class Remainders extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $remainders = $this->remainderModel->get_all_remainders_by_id($this->userId);
-            $remainder = $this->findRemainder($remainders, $id);
+            $oldRow = $this->findRemainder($remainders, $id);
 
-            if (!$remainder) {
+            if (!$oldRow) {
                 echo 'Remainder not found';
                 die;
             }
 
             $this->remainderModel->delete_remainder($id);
+            $newRow = $this->remainderModel->get_remainder_by_id($id);
 
-            header('Location: /remainders');
-            die;
+            $this->view('remainders/delete', [
+                'remainder' => $oldRow,
+                'oldRow' => $oldRow,
+                'newRow' => $newRow,
+                'updated' => true
+            ]);
         }
     }
 
