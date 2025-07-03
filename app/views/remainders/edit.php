@@ -89,13 +89,26 @@
             </div>
 
             <div class="alert alert-success mt-3">
-                Update successful! Redirecting back to index page...
+                Update successful! Redirecting to index in <span id="timer">10</span> seconds...
             </div>
 
+            <button onclick="window.location.href='/remainders'" class="btn btn-primary mt-2">
+                Redirect Now
+            </button>
+
             <script>
-                setTimeout(function() {
-                    window.location.href = "/remainders";
-                }, 10000);
+                let timeLeft = 10;
+                const timer = document.getElementById('timer');
+
+                const countdown = setInterval(() => {
+                    timeLeft--;
+                    timer.textContent = timeLeft;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        window.location.href = "/remainders";
+                    }
+                }, 1000);
             </script>
         </div>
     <?php endif; ?>

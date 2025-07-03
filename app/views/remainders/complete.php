@@ -76,7 +76,7 @@
     </div>
 
     <button onclick="window.location.href='/remainders'" class="btn btn-primary mt-2">
-        Redirect to Remainders
+        Redirect Now
     </button>
 
     <script>
