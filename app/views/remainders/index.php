@@ -59,7 +59,7 @@
                 </table>
             </div>
 
-            <h4 class="mt-5">All Remainder Raw Data</h4>
+            <h4 class="mt-5">Remainder Database table Data</h4>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
                     <thead>
