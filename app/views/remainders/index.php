@@ -58,6 +58,40 @@
                     </tbody>
                 </table>
             </div>
+
+            <h4 class="mt-5">All Remainder Raw Data</h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>User ID</th>
+                            <th>Subject</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>Deleted At</th>
+                            <th>Completed At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($remainders as $rem): ?>
+                        <tr>
+                            <td><?= $rem['id'] ?></td>
+                            <td><?= $rem['user_id'] ?></td>
+                            <td><?= htmlspecialchars($rem['subject']); ?></td>
+                            <td><?= htmlspecialchars($rem['description']); ?></td>
+                            <td><?= $rem['status'] ?></td>
+                            <td><?= $rem['created_at'] ?></td>
+                            <td><?= $rem['updated_at'] ?></td>
+                            <td><?= $rem['deleted_at'] ?></td>
+                            <td><?= $rem['completed_at'] ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
